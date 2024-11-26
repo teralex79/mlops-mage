@@ -9,7 +9,7 @@ if 'test' not in globals():
 
 
 @transformer
-def transform(data, *args, **kwargs):
+def transform(df, *args, **kwargs):
     """
     Template code for a transformer block.
 
@@ -26,7 +26,9 @@ def transform(data, *args, **kwargs):
     # Specify your transformation logic here
     dv = DictVectorizer()
 
-    train_dicts = df[categorical + numerical].to_dict(orient='records') 
+    categorical = ['PULocationID', 'DOLocationID']
+
+    train_dicts = df[categorical].to_dict(orient='records') 
     X_train = dv.fit_transform(train_dicts)
     target = 'duration'
 
@@ -36,7 +38,7 @@ def transform(data, *args, **kwargs):
     lr.fit(X_train, y_train)
 
     y_pred = lr.predict(X_train)
-
+    print(lr.intercept_)
     return dv, lr
 
 

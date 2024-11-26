@@ -48,7 +48,7 @@ blocks:
   language: python
   name: training
   retry_config: null
-  status: updated
+  status: executed
   timeout: null
   type: transformer
   upstream_blocks:
