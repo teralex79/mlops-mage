@@ -1,21 +1,14 @@
 import pickle
 import mlflow
 
-EXPERIMENT_NAME = "nyc-yellow-taxi-lin-reg-exp"
-
-mlflow.set_tracking_uri('http://127.0.0.1:5000/')
-mlflow.set_experiment(EXPERIMENT_NAME)
+mlflow.set_tracking_uri("http://mlflow:5000/")
+mlflow.set_experiment("nyc-yellow-taxi-lin-reg-exp")
 
 if 'data_exporter' not in globals():
     from mage_ai.data_preparation.decorators import data_exporter
 
 
 @data_exporter
-def dump_pickle(filename: str):
-    with open(filename, "wb") as f_out:
-        return pickle.dump(f_out)
-
-
 def export_data(data, *args, **kwargs):
     """
     Exports data to some source.
@@ -29,10 +22,12 @@ def export_data(data, *args, **kwargs):
         displayed when inspecting the block run.
     """
     dv, lr = data
+    
     with mlflow.start_run():
-        dump_pickle(dv, 'dv.pkl')
-        mlflow.log_artifact('dv.pkl')
-        mlflow.log_model(lr, 'model')
-
-
-
+        with open('./dv.pkl', 'wb') as f_out:
+            pickle.dump(dv, f_out)
+        print('OK_1')
+        mlflow.log_artifact('./dv.pkl')
+        print('OK_2')
+        mlflow.sklearn.log_model(lr, 'model')
+    print('OK')
